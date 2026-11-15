@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
 :root {
     --navy: #123c70;
     --blue: #1769aa;
@@ -23,26 +25,34 @@ body {
     font-family: 'DM Sans', sans-serif;
     color: var(--text);
     background: #f8fbff;
+    line-height: 1.6;
 }
 
 a {
     text-decoration: none;
 }
 
+button, input, select, textarea {
+    font: inherit;
+}
+
 /* TOP BAR */
 
 .topbar {
-    background: #123c70;
+    background: var(--navy);
     color: white;
     padding: 11px 5%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 12px;
+    gap: 15px;
 }
 
 .topbar div {
     display: flex;
     gap: 30px;
+    flex-wrap: wrap;
 }
 
 .topbar i {
@@ -58,6 +68,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 25px;
     background: white;
     box-shadow: 0 3px 15px rgba(20, 55, 90, 0.06);
     position: relative;
@@ -69,6 +80,7 @@ a {
     align-items: center;
     gap: 12px;
     color: var(--navy);
+    flex-shrink: 0;
 }
 
 .brand > i {
@@ -79,9 +91,11 @@ a {
 .brand h2 {
     font-size: 23px;
     font-weight: 800;
+    font-family: 'Manrope', sans-serif;
 }
 
 .brand small {
+    display: block;
     font-size: 9px;
     letter-spacing: 3px;
     color: #8394a8;
@@ -89,7 +103,10 @@ a {
 
 .navbar nav {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 25px;
+    flex: 1;
 }
 
 .navbar nav a {
@@ -97,6 +114,7 @@ a {
     font-size: 13px;
     font-weight: 600;
     transition: 0.3s;
+    white-space: nowrap;
 }
 
 .navbar nav a:hover {
@@ -111,6 +129,7 @@ a {
     font-size: 13px;
     font-weight: 700;
     transition: 0.3s;
+    white-space: nowrap;
 }
 
 .nav-button:hover,
@@ -121,34 +140,48 @@ a {
 
 /* HERO */
 
-
 .hero {
-    min-height: 620px;
-    padding: 90px 7%;
+    min-height: 570px;
+    padding: 85px 7%;
     display: flex;
     align-items: center;
     position: relative;
     background:
-        linear-gradient(
-            90deg,
-            rgba(237, 247, 255, 1) 0%,
-            rgba(237, 247, 255, 0.96) 38%,
-            rgba(237, 247, 255, 0.25) 75%
+        radial-gradient(
+            circle at 82% 48%,
+            rgba(57, 168, 223, 0.20),
+            transparent 28%
         ),
-        url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1800&q=85')
-        center 35% / cover no-repeat;
+        radial-gradient(
+            circle at 95% 10%,
+            rgba(23, 105, 170, 0.10),
+            transparent 24%
+        ),
+        linear-gradient(110deg, #edf7ff 0%, #f8fcff 100%);
     overflow: hidden;
 }
 
-
-.hero-content p {
-    max-width: 520px;
-    font-size: 17px;
-    line-height: 1.8;
-    color: #52677e;
-    margin: 20px 0 30px;
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid rgba(23, 105, 170, 0.12);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 35px rgba(23, 105, 170, 0.025),
+        0 0 0 75px rgba(23, 105, 170, 0.02);
+    pointer-events: none;
 }
 
+.hero-content {
+    max-width: 650px;
+    position: relative;
+    z-index: 2;
+}
 
 .eyebrow,
 .section-title span,
@@ -161,6 +194,8 @@ a {
 }
 
 .hero h1 {
+    max-width: 650px;
+    font-family: 'Manrope', sans-serif;
     font-size: clamp(42px, 5vw, 59px);
     line-height: 1.15;
     letter-spacing: -2px;
@@ -172,13 +207,14 @@ a {
     color: #2786bd;
 }
 
+.hero-content p,
 .hero-content > p {
-    max-width: 450px;
-    color: #536d86;
+    max-width: 480px;
     font-size: 15px;
     line-height: 1.9;
+    color: #536d86;
+    margin: 20px 0 30px;
 }
-
 
 .hero-buttons {
     display: flex;
@@ -189,11 +225,11 @@ a {
 }
 
 .hero-buttons a {
+    display: inline-block;
     padding: 15px 28px;
     border-radius: 10px;
     font-size: 15px;
     font-weight: 600;
-    text-decoration: none;
     transition: all 0.3s ease;
 }
 
@@ -276,6 +312,7 @@ a {
 .trust-item > i {
     font-size: 31px;
     color: var(--blue);
+    flex-shrink: 0;
 }
 
 .trust-item h3 {
@@ -301,6 +338,7 @@ a {
 }
 
 .section-title h2 {
+    font-family: 'Manrope', sans-serif;
     font-size: 34px;
     margin: 13px 0;
     color: #183d68;
@@ -377,13 +415,18 @@ a {
     border-radius: 8px;
     font-size: 13px;
     font-weight: 700;
+    transition: .3s;
+}
+
+.all-services:hover {
+    background: var(--blue);
+    transform: translateY(-2px);
 }
 
 /* STATISTICS */
 
 .statistics {
-    background:
-        linear-gradient(110deg, #1266a8, #218fc7);
+    background: linear-gradient(110deg, #1266a8, #218fc7);
     padding: 40px 7%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -427,12 +470,15 @@ a {
 .about-image {
     min-height: 380px;
     border-radius: 15px;
-    background: url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=1000&auto=format&fit=crop')
-    center / cover no-repeat;
+    background:
+        linear-gradient(135deg, rgba(18, 60, 112, .08), rgba(57, 168, 223, .12)),
+        url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=1000&auto=format&fit=crop')
+        center / cover no-repeat;
     box-shadow: 0 15px 35px rgba(25, 65, 105, 0.12);
 }
 
 .about-content h2 {
+    font-family: 'Manrope', sans-serif;
     font-size: 35px;
     line-height: 1.25;
     margin: 17px 0;
@@ -475,6 +521,7 @@ a {
 }
 
 .appointment h2 {
+    font-family: 'Manrope', sans-serif;
     font-size: 29px;
     color: #183d68;
     margin: 13px 0;
@@ -486,6 +533,7 @@ a {
 }
 
 .appointment-button {
+    display: inline-block;
     white-space: nowrap;
     background: var(--navy);
     color: white;
@@ -493,6 +541,12 @@ a {
     border-radius: 9px;
     font-size: 13px;
     font-weight: 700;
+    transition: .3s;
+}
+
+.appointment-button:hover {
+    background: var(--blue);
+    transform: translateY(-2px);
 }
 
 /* FOOTER */
@@ -523,11 +577,17 @@ footer {
     justify-content: center;
     gap: 30px;
     margin: 28px 0;
+    flex-wrap: wrap;
 }
 
 .footer-links a {
     color: #d1e2f0;
     font-size: 13px;
+    transition: .2s;
+}
+
+.footer-links a:hover {
+    color: white;
 }
 
 .copyright {
@@ -537,16 +597,147 @@ footer {
     color: #a9c3dc;
 }
 
+/* HOSPITAL DIRECTORY */
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 65px 35px;
+}
+
+.container h1 {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(32px, 5vw, 46px);
+    color: var(--navy);
+    margin-bottom: 12px;
+}
+
+.container > p {
+    color: var(--muted);
+    margin-bottom: 38px;
+}
+
+.hospital-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.hospital-card {
+    background: white;
+    border: 1px solid #e5ebf5;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 8px 30px rgba(26, 54, 93, 0.05);
+    transition: .3s;
+}
+
+.hospital-card::before {
+    content: "✚";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #eaf2ff;
+    color: var(--blue);
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.hospital-card:hover {
+    transform: translateY(-6px);
+    border-color: #b5d8f1;
+    box-shadow: 0 15px 35px rgba(25, 65, 105, 0.10);
+}
+
+.hospital-card h2 {
+    color: var(--navy);
+    font-size: 20px;
+    margin-bottom: 14px;
+}
+
+.hospital-card p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.hospital-card a {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 18px;
+    background: var(--blue);
+    color: white;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: .3s;
+}
+
+.hospital-card a:hover {
+    background: var(--navy);
+}
+
+/* REGISTRATION AND OTHER FORMS */
+
+.form-container {
+    max-width: 650px;
+    margin: 50px auto;
+    padding: 35px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 8px 35px rgba(26, 54, 93, .07);
+}
+
+.form-container h1 {
+    color: var(--navy);
+    margin-bottom: 25px;
+}
+
+.form-container label {
+    display: block;
+    margin: 15px 0 7px;
+    font-weight: 600;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #dce4ef;
+    border-radius: 9px;
+    outline: none;
+    background: white;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+    border-color: var(--blue);
+}
+
+.form-container button {
+    width: 100%;
+    margin-top: 22px;
+    border: none;
+    cursor: pointer;
+}
+
 /* RESPONSIVE DESIGN */
 
-@media(max-width: 1000px) {
+@media (max-width: 1100px) {
     .navbar {
         flex-wrap: wrap;
-        gap: 18px;
+        justify-content: center;
     }
 
     .navbar nav {
-        gap: 15px;
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+        gap: 18px;
     }
 
     .trust-section {
@@ -558,62 +749,19 @@ footer {
     }
 }
 
-@media(max-width: 700px) {
-    .topbar {
-        flex-direction: column;
-        gap: 9px;
-    }
-
-    .topbar div {
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .navbar {
-        justify-content: center;
-    }
-
-    .navbar nav {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .hero {
-        padding: 70px 7%;
-        background-position: 60% center;
-    }
-
-    .hero h1 {
-        font-size: 43px;
-    }
-
-    .trust-section {
-        margin: 20px 5%;
-        grid-template-columns: 1fr;
-    }
-
-    .trust-item {
-        border-right: none;
-        border-bottom: 1px solid #edf1f6;
-        padding-bottom: 15px;
-    }
-
-    .service-grid {
+@media (max-width: 800px) {
+    .service-grid,
+    .hospital-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .statistics {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-    }
-
-    .stat:nth-child(2) {
-        border: none;
     }
 
     .about {
         grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .about-image {
+        min-height: 300px;
     }
 
     .appointment {
@@ -622,21 +770,168 @@ footer {
     }
 }
 
-@media(max-width: 450px) {
-    .service-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 600px) {
+    .topbar {
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .topbar div {
+        gap: 10px;
+    }
+
+    .navbar {
+        padding: 18px 5%;
+        gap: 16px;
+    }
+
+    .navbar nav {
+        justify-content: center;
+        gap: 13px;
+    }
+
+    .nav-button {
+        padding: 11px 16px;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 65px 7%;
     }
 
     .hero h1 {
-        font-size: 37px;
+        font-size: 39px;
+        letter-spacing: -1px;
+    }
+
+    .hero-content p {
+        font-size: 14px;
+    }
+
+    .hero::after {
+        width: 220px;
+        height: 220px;
+        right: -110px;
+        opacity: .5;
+    }
+
+    .hero-buttons {
+        gap: 12px;
+    }
+
+    .hero-buttons a {
+        padding: 13px 18px;
+    }
+
+    .trust-section {
+        margin: 20px 5%;
+        padding: 20px;
+        grid-template-columns: 1fr;
+    }
+
+    .trust-item {
+        border-right: none;
+        border-bottom: 1px solid #edf1f6;
+        padding: 10px 5px 16px;
+    }
+
+    .trust-item:last-child {
+        border: none;
+    }
+
+    .section {
+        padding: 60px 6%;
     }
 
     .section-title h2 {
-        font-size: 27px;
+        font-size: 28px;
+    }
+
+    .service-grid,
+    .hospital-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px 12px;
+        padding: 35px 6%;
+    }
+
+    .stat {
+        border-right: none;
+    }
+
+    .stat h2 {
+        font-size: 28px;
+    }
+
+    .about-content h2 {
+        font-size: 29px;
+    }
+
+    .appointment {
+        margin: 0 5% 55px;
+        padding: 35px 25px;
+    }
+
+    .appointment h2 {
+        font-size: 25px;
     }
 
     .footer-links {
-        flex-wrap: wrap;
-        gap: 15px;
+        gap: 16px;
     }
+
+    .container {
+        padding: 40px 20px;
+    }
+
+    .form-container {
+        margin: 30px 15px;
+        padding: 25px 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* FLASH MESSAGES */
+
+.flash-container {
+    max-width: 1200px;
+    margin: 18px auto;
+    padding: 0 20px;
+}
+
+.flash-message {
+    padding: 13px 16px;
+    margin-bottom: 10px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #eaf4fc;
+    color: #1769aa;
+}
+
+.flash-message.error,
+.flash-message.danger {
+    background: #fff0ee;
+    color: #b83e35;
+}
+
+.flash-message.warning {
+    background: #fff8e8;
+    color: #946313;
+}
+
+.flash-message.success {
+    background: #e9f7ef;
+    color: #237849;
 }

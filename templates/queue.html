@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="15">
+
+    <title>Live Queue | HealthQueue</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f4f8fc;
+            margin: 0;
+            color: #17324f;
+        }
+
+        .queue-page {
+            max-width: 1150px;
+            margin: 55px auto;
+            padding: 0 22px;
+        }
+
+        .queue-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .queue-heading h1 {
+            font-size: 34px;
+            margin: 0 0 8px;
+            color: #123c70;
+        }
+
+        .queue-heading p {
+            color: #718096;
+            margin: 0;
+        }
+
+        .live-indicator {
+            background: #e4f8ee;
+            color: #16834c;
+            padding: 10px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .queue-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 23px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(18, 60, 112, 0.06);
+        }
+
+        .summary-card span {
+            color: #718096;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .summary-card h2 {
+            font-size: 30px;
+            color: #123c70;
+            margin: 10px 0 0;
+        }
+
+        .queue-container {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 5px 25px rgba(18, 60, 112, 0.06);
+            overflow-x: auto;
+        }
+
+        .queue-container h2 {
+            color: #123c70;
+            margin-top: 0;
+            margin-bottom: 22px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            color: #718096;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            background: #f5f9fd;
+        }
+
+        td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .token {
+            color: #1769aa;
+            font-weight: 800;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .waiting {
+            background: #fff4dc;
+            color: #a66b00;
+        }
+
+        .serving {
+            background: #e3f2ff;
+            color: #1769aa;
+        }
+
+        .completed {
+            background: #e3f8ec;
+            color: #16834c;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 55px 15px;
+            color: #718096;
+        }
+
+        .empty-state h3 {
+            color: #123c70;
+            margin-bottom: 8px;
+        }
+
+        .queue-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .queue-button {
+            text-decoration: none;
+            background: #1769aa;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .queue-button.secondary {
+            background: #eaf4fc;
+            color: #1769aa;
+        }
+
+        .refresh-note {
+            text-align: center;
+            color: #8795a5;
+            font-size: 12px;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 650px) {
+            .queue-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .queue-heading h1 {
+                font-size: 27px;
+            }
+
+            .queue-container {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <a href="{{ url_for('home') }}" class="brand">
+                HealthQueue
+            </a>
+
+            <nav>
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('hospitals') }}">Hospitals</a>
+                <a href="{{ url_for('register') }}">Book Appointment</a>
+                <a href="{{ url_for('queue_dashboard') }}">Live Queue</a>
+                <a href="{{ url_for('doctor_login') }}">Doctor Portal</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="queue-page">
+
+        <div class="queue-heading">
+            <div>
+                <h1>Live Queue Dashboard</h1>
+                <p>Track patient tokens and consultation progress in real time.</p>
+            </div>
+
+            <div class="live-indicator">
+                ● LIVE QUEUE
+            </div>
+        </div>
+
+        {% set waiting_count = patients | selectattr('queue_status', 'equalto', 'Waiting') | list | length %}
+        {% set serving_count = patients | selectattr('queue_status', 'equalto', 'Serving') | list | length %}
+        {% set completed_count = patients | selectattr('queue_status', 'equalto', 'Completed') | list | length %}
+
+        <section class="queue-summary">
+
+            <div class="summary-card">
+                <span>Waiting Patients</span>
+                <h2>{{ waiting_count }}</h2>
+            </div>
+
+            <div class="summary-card">
+                <span>Currently Serving</span>
+                <h2>{{ serving_count }}</h2>
+            </div>
+
+            <div class="summary-card">
+                <span>Completed Consultations</span>
+                <h2>{{ completed_count }}</h2>
+            </div>
+
+        </section>
+
+        <section class="queue-container">
+
+            <h2>Patient Queue</h2>
+
+            {% if patients %}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Token Number</th>
+                        <th>Patient Name</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for patient in patients %}
+                    <tr>
+                        <td><strong>{{ patient['queue_position'] }}</strong></td>
+
+                        <td class="token">
+                            {{ patient['token_number'] }}
+                        </td>
+
+                        <td>{{ patient['name'] }}</td>
+
+                        <td>{{ patient['department'] }}</td>
+
+                        <td>
+                            {% if patient['queue_status'] == 'Waiting' %}
+                                <span class="status waiting">Waiting</span>
+                            {% elif patient['queue_status'] == 'Serving' %}
+                                <span class="status serving">Now Serving</span>
+                            {% elif patient['queue_status'] == 'Completed' %}
+                                <span class="status completed">Completed</span>
+                            {% else %}
+                                <span class="status">{{ patient['queue_status'] }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% else %}
+
+            <div class="empty-state">
+                <h3>No patients in the queue</h3>
+                <p>New patient registrations will appear here.</p>
+            </div>
+
+            {% endif %}
+
+            <div class="queue-actions">
+                <a href="{{ url_for('register') }}" class="queue-button">
+                    Book Appointment
+                </a>
+
+                <a href="{{ url_for('doctor_login') }}" class="queue-button secondary">
+                    Doctor Portal
+                </a>
+            </div>
+
+        </section>
+
+        <p class="refresh-note">
+            This dashboard automatically refreshes every 15 seconds.
+        </p>
+
+    </main>
+
+</body>
+</html>

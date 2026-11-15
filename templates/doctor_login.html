@@ -1,0 +1,125 @@
+
+{% extends "base.html" %}
+
+{% block title %}Doctor Login | HealthQueue{% endblock %}
+
+{% block head %}
+<style>
+    .doctor-login-wrapper {
+        min-height: 75vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background: #f1f7fc;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 440px;
+        padding: 38px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 12px 40px rgba(18,60,112,.09);
+    }
+
+    .login-icon {
+        width: 70px;
+        height: 70px;
+        display: grid;
+        place-items: center;
+        border-radius: 18px;
+        background: #eaf4fc;
+        color: #1769aa;
+        font-size: 30px;
+        margin-bottom: 22px;
+    }
+
+    .auth-card h1 {
+        color: #123c70;
+        font-size: 29px;
+        margin: 0 0 10px;
+    }
+
+    .subtitle {
+        color: #718096;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 27px;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 15px;
+        background: #1769aa;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .login-button:hover {
+        background: #123c70;
+        transform: translateY(-2px);
+    }
+
+    .demo-note {
+        margin-top: 20px;
+        padding: 13px;
+        background: #eaf4fc;
+        border-radius: 9px;
+        color: #456783;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 23px;
+        font-size: 13px;
+        color: #1769aa;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="doctor-login-wrapper">
+
+    <main class="auth-card">
+
+        <div class="login-icon">
+            <i class="fas fa-user-doctor"></i>
+        </div>
+
+        <h1>Doctor Portal</h1>
+
+        <p class="subtitle">
+            Welcome to HealthQueue. Access your appointments,
+            patient records and consultation dashboard.
+        </p>
+
+        <form method="POST" action="{{ url_for('doctor_login') }}">
+            <button type="submit" class="login-button">
+                Continue to Doctor Dashboard
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="demo-note">
+            <i class="fas fa-info-circle"></i>
+            Demo access. No phone number or password required.
+        </div>
+
+        <a href="{{ url_for('home') }}" class="back-link">
+            ← Back to HealthQueue
+        </a>
+
+    </main>
+
+</div>
+{% endblock %}

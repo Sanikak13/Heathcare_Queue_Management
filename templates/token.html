@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Your Digital Token | HealthQueue</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f4f8fc;
+            color: #183653;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            color: #1476c8;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #16a6a0;
+        }
+
+        .navbar small {
+            color: #71869c;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 55px auto;
+            padding: 20px;
+        }
+
+        .success {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .success-icon {
+            width: 75px;
+            height: 75px;
+            background: #d9f8ed;
+            color: #0d9b70;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 34px;
+            margin: 0 auto 20px;
+        }
+
+        .success h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .success p {
+            color: #71869c;
+            line-height: 1.7;
+        }
+
+        .token-card {
+            background: white;
+            border-radius: 22px;
+            padding: 38px;
+            box-shadow: 0 15px 45px rgba(25,70,120,0.08);
+            text-align: center;
+        }
+
+        .token-label {
+            color: #7b8da1;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .token-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1476c8;
+            margin: 15px 0;
+        }
+
+        .status {
+            display: inline-block;
+            background: #fff4d8;
+            color: #a36a00;
+            padding: 9px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .details {
+            margin-top: 30px;
+            border-top: 1px solid #e9eff5;
+            padding-top: 20px;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f3f7;
+            font-size: 14px;
+        }
+
+        .detail-row span:first-child {
+            color: #8494a7;
+        }
+
+        .detail-row span:last-child {
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .position {
+            background: #edf6ff;
+            border-radius: 14px;
+            padding: 22px;
+            margin-top: 25px;
+        }
+
+        .position p {
+            color: #6d8197;
+            font-size: 13px;
+        }
+
+        .position h2 {
+            color: #1476c8;
+            font-size: 35px;
+            margin-top: 8px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .primary {
+            background: #1476c8;
+            color: white;
+        }
+
+        .secondary {
+            background: #eaf3fc;
+            color: #1476c8;
+        }
+
+        .note {
+            color: #8999aa;
+            font-size: 11px;
+            margin-top: 25px;
+            line-height: 1.7;
+        }
+
+        .demo-note {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f5f8fc;
+            color: #71849a;
+            border-radius: 9px;
+            font-size: 11px;
+        }
+
+        @media(max-width: 550px) {
+            .token-card {
+                padding: 25px 18px;
+            }
+
+            .token-number {
+                font-size: 38px;
+            }
+
+            .success h1 {
+                font-size: 25px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .navbar {
+                padding: 18px 5%;
+            }
+        }
+
+        @media print {
+            .navbar, .actions, .demo-note {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .container {
+                margin: 20px auto;
+            }
+
+            .token-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="{{ url_for('home') }}" class="logo">
+        Health<span>Queue</span>
+    </a>
+
+    <small>Digital Healthcare Platform</small>
+</nav>
+
+<main class="container">
+
+    <section class="success">
+
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+
+        <h1>Registration Successful!</h1>
+
+        <p>
+            Your registration has been recorded.
+            Your digital queue token is ready.
+        </p>
+
+    </section>
+
+    <section class="token-card">
+
+        <p class="token-label">YOUR DIGITAL TOKEN</p>
+
+        <div class="token-number">{{ token }}</div>
+
+        <span class="status">
+            <i class="fas fa-clock"></i> Waiting in Queue
+        </span>
+
+        <div class="details">
+
+            <div class="detail-row">
+                <span>Patient Name</span>
+                <span>{{ name }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Hospital</span>
+                <span>{{ hospital_name }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Doctor</span>
+                <span>{{ doctor_name }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Department</span>
+                <span>{{ department }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span>Registration Status</span>
+                <span>Successful</span>
+            </div>
+
+        </div>
+
+        <div class="position">
+            <p>Your current position in the queue</p>
+            <h2>#{{ position }}</h2>
+        </div>
+
+        <div class="actions">
+
+            <button class="btn secondary" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Token
+            </button>
+
+            <a href="{{ url_for('queue_dashboard') }}" class="btn primary">
+                <i class="fas fa-list"></i> View Live Queue
+            </a>
+
+        </div>
+
+        <div class="demo-note">
+            <i class="fas fa-info-circle"></i>
+            This is a digital queue registration for the HealthQueue academic demo.
+            It does not represent a confirmed real-world medical appointment.
+        </div>
+
+        <p class="note">
+            Please keep your token number safe.
+            Follow your queue status before proceeding to the consultation area.
+        </p>
+
+    </section>
+
+</main>
+
+</body>
+</html>

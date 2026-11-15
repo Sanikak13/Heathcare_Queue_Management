@@ -1,0 +1,1079 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Dashboard | HealthQueue{% endblock %}
+
+{% block head %}
+
+<style>
+
+          .staff-dashboard {
+
+                    display: flex;
+
+                    min-height: 75vh;
+
+                    background: #f3f7fb;
+
+                    color: #1e293b;
+
+          }
+
+          .staff-sidebar {
+
+                    width: 245px;
+
+                    flex-shrink: 0;
+
+                    padding: 28px 18px;
+
+                    background: #10243e;
+
+                    color: white;
+
+          }
+
+          .staff-sidebar .staff-brand {
+
+                    color: #63c5ff;
+
+                    font-size: 23px;
+
+                    font-weight: bold;
+
+                    padding: 0 12px;
+
+          }
+
+          .staff-sidebar .staff-subtitle {
+
+                    color: #9eb0c6;
+
+                    font-size: 11px;
+
+                    padding: 8px 12px;
+
+                    margin-bottom: 35px;
+
+          }
+
+          .staff-sidebar .nav-label {
+
+                    color: #8498b1;
+
+                    font-size: 10px;
+
+                    font-weight: bold;
+
+                    letter-spacing: 1.5px;
+
+                    padding: 0 12px;
+
+                    margin: 22px 0 10px;
+
+          }
+
+          .staff-sidebar a {
+
+                    display: block;
+
+                    padding: 13px 12px;
+
+                    margin: 5px 0;
+
+                    border-radius: 8px;
+
+                    color: #d4dfed;
+
+                    text-decoration: none;
+
+                    font-size: 13px;
+
+          }
+
+          .staff-sidebar a:hover {
+
+                    background: #203d5e;
+
+                    color: white;
+
+          }
+
+          .staff-sidebar .logout {
+
+                    margin-top: 35px;
+
+                    color: #ffaaaa;
+
+          }
+
+          .staff-main {
+
+                    flex: 1;
+
+                    min-width: 0;
+
+                    padding: 32px 35px;
+
+          }
+
+          .staff-topbar {
+
+                    display: flex;
+
+                    justify-content: space-between;
+
+                    align-items: center;
+
+                    gap: 15px;
+
+                    margin-bottom: 30px;
+
+                    flex-wrap: wrap;
+
+          }
+
+          .staff-topbar h1 {
+
+                    font-size: 26px;
+
+                    margin-bottom: 8px;
+
+                    color: #123c70;
+
+          }
+
+          .staff-topbar p {
+
+                    color: #718096;
+
+                    font-size: 13px;
+
+          }
+
+          .staff-profile {
+
+                    background: white;
+
+                    padding: 12px 17px;
+
+                    border-radius: 10px;
+
+                    font-size: 13px;
+
+                    box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+
+          }
+
+          .staff-profile strong {
+
+                    color: #0879c9;
+
+          }
+
+          .staff-cards {
+
+                    display: grid;
+
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+                    gap: 18px;
+
+                    margin-bottom: 28px;
+
+          }
+
+          .staff-card {
+
+                    background: white;
+
+                    padding: 22px;
+
+                    border-radius: 13px;
+
+                    border: 1px solid #edf1f6;
+
+                    box-shadow: 0 4px 15px rgba(20,50,90,0.04);
+
+          }
+
+          .staff-card p {
+
+                    color: #718096;
+
+                    font-size: 12px;
+
+                    margin-bottom: 13px;
+
+          }
+
+          .staff-card h2 {
+
+                    font-size: 28px;
+
+                    color: #10243e;
+
+          }
+
+          .staff-section {
+
+                    background: white;
+
+                    padding: 25px;
+
+                    border-radius: 13px;
+
+                    border: 1px solid #edf1f6;
+
+                    box-shadow: 0 4px 15px rgba(20,50,90,0.04);
+
+                    margin-bottom: 25px;
+
+                    scroll-margin-top: 20px;
+
+          }
+
+          .staff-section-header {
+
+                    margin-bottom: 20px;
+
+          }
+
+          .staff-section-header h2 {
+
+                    font-size: 19px;
+
+                    margin-bottom: 7px;
+
+                    color: #123c70;
+
+          }
+
+          .staff-section-header p {
+
+                    color: #8795a8;
+
+                    font-size: 12px;
+
+          }
+
+          .shift-info {
+
+                    display: grid;
+
+                    grid-template-columns: repeat(2, 1fr);
+
+                    gap: 15px;
+
+                    margin-bottom: 22px;
+
+          }
+
+          .info-box {
+
+                    padding: 17px;
+
+                    border-radius: 10px;
+
+                    background: #f5f9fd;
+
+          }
+
+          .info-box span {
+
+                    display: block;
+
+                    color: #718096;
+
+                    font-size: 11px;
+
+                    margin-bottom: 8px;
+
+          }
+
+          .info-box strong {
+
+                    font-size: 15px;
+
+                    color: #10243e;
+
+          }
+
+          .attendance-status {
+
+                    padding: 12px 15px;
+
+                    border-radius: 8px;
+
+                    background: #f5f9fd;
+
+                    color: #526176;
+
+                    font-size: 13px;
+
+                    margin-bottom: 18px;
+
+          }
+
+          .attendance-status strong {
+
+                    color: #0879c9;
+
+          }
+
+          .staff-button-row {
+
+                    display: flex;
+
+                    flex-wrap: wrap;
+
+                    gap: 10px;
+
+          }
+
+          .staff-btn {
+
+                    display: inline-block;
+
+                    padding: 12px 18px;
+
+                    border: none;
+
+                    border-radius: 8px;
+
+                    background: #0879c9;
+
+                    color: white;
+
+                    font-size: 12px;
+
+                    font-weight: bold;
+
+                    cursor: pointer;
+
+                    text-decoration: none;
+
+          }
+
+          .staff-btn:hover {
+
+                    background: #0565a9;
+
+          }
+
+          .staff-btn.green {
+
+                    background: #16865b;
+
+          }
+
+          .staff-btn.green:hover {
+
+                    background: #116b48;
+
+          }
+
+          .staff-btn.red {
+
+                    background: #fff0f0;
+
+                    color: #c53030;
+
+          }
+
+          .staff-btn.red:hover {
+
+                    background: #ffe0e0;
+
+          }
+
+          .staff-btn:disabled {
+
+                    opacity: .45;
+
+                    cursor: not-allowed;
+
+          }
+
+          .task-list {
+
+                    display: flex;
+
+                    flex-direction: column;
+
+                    gap: 14px;
+
+          }
+
+          .task-item {
+
+                    border: 1px solid #e9eef5;
+
+                    padding: 18px;
+
+                    border-radius: 10px;
+
+          }
+
+          .task-top {
+
+                    display: flex;
+
+                    justify-content: space-between;
+
+                    align-items: flex-start;
+
+                    gap: 12px;
+
+                    margin-bottom: 10px;
+
+          }
+
+          .task-item h3 {
+
+                    font-size: 14px;
+
+                    margin-bottom: 7px;
+
+          }
+
+          .task-item p {
+
+                    font-size: 12px;
+
+                    line-height: 1.6;
+
+                    color: #718096;
+
+          }
+
+          .task-date {
+
+                    font-size: 11px;
+
+                    color: #8795a8;
+
+                    margin-top: 10px;
+
+          }
+
+          .task-status {
+
+                    display: inline-block;
+
+                    padding: 6px 10px;
+
+                    border-radius: 20px;
+
+                    background: #fff4df;
+
+                    color: #a76b00;
+
+                    font-size: 10px;
+
+                    font-weight: bold;
+
+                    white-space: nowrap;
+
+          }
+
+          .task-status.completed {
+
+                    background: #e5f7ed;
+
+                    color: #198754;
+
+          }
+
+          .task-status.in-progress {
+
+                    background: #e5f3ff;
+
+                    color: #0879c9;
+
+          }
+
+          .task-actions {
+
+                    margin-top: 13px;
+
+          }
+
+          .task-actions select {
+
+                    padding: 9px;
+
+                    border: 1px solid #dce4ed;
+
+                    border-radius: 7px;
+
+                    font-size: 12px;
+
+                    margin-right: 7px;
+
+                    margin-bottom: 7px;
+
+          }
+
+          .staff-table-wrap {
+
+                    overflow-x: auto;
+
+          }
+
+          .staff-table {
+
+                    width: 100%;
+
+                    border-collapse: collapse;
+
+                    min-width: 450px;
+
+          }
+
+          .staff-table th {
+
+                    text-align: left;
+
+                    padding: 13px;
+
+                    background: #f5f8fc;
+
+                    color: #718096;
+
+                    font-size: 11px;
+
+          }
+
+          .staff-table td {
+
+                    padding: 14px 13px;
+
+                    border-bottom: 1px solid #edf1f6;
+
+                    color: #405168;
+
+                    font-size: 12px;
+
+          }
+
+          .empty {
+
+                    text-align: center;
+
+                    color: #8795a8;
+
+                    padding: 25px;
+
+          }
+
+          .staff-footer {
+
+                    text-align: center;
+
+                    padding: 15px;
+
+                    color: #98a5b5;
+
+                    font-size: 11px;
+
+          }
+
+          @media (max-width: 900px) {
+
+                    .staff-cards {
+
+                              grid-template-columns: repeat(2, 1fr);
+
+                    }
+
+          }
+
+          @media (max-width: 700px) {
+
+                    .staff-dashboard {
+
+                              flex-direction: column;
+
+                    }
+
+                    .staff-sidebar {
+
+                              width: 100%;
+
+                              height: auto;
+
+                              padding: 20px 15px;
+
+                    }
+
+                    .staff-sidebar .staff-subtitle {
+
+                              margin-bottom: 15px;
+
+                    }
+
+                    .staff-sidebar nav {
+
+                              display: flex;
+
+                              flex-wrap: wrap;
+
+                              gap: 5px;
+
+                    }
+
+                    .staff-sidebar .nav-label {
+
+                              width: 100%;
+
+                    }
+
+                    .staff-sidebar a {
+
+                              padding: 9px;
+
+                    }
+
+                    .staff-sidebar .logout {
+
+                              margin-top: 5px;
+
+                    }
+
+                    .staff-main {
+
+                              padding: 22px 15px;
+
+                    }
+
+                    .staff-topbar {
+
+                              flex-direction: column;
+
+                              align-items: flex-start;
+
+                    }
+
+                    .staff-cards {
+
+                              grid-template-columns: 1fr;
+
+                    }
+
+                    .shift-info {
+
+                              grid-template-columns: 1fr;
+
+                    }
+
+                    .staff-section {
+
+                              padding: 18px;
+
+                    }
+
+          }
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="staff-dashboard">
+
+          <aside class="staff-sidebar">
+
+                    <div class="staff-brand">HealthQueue</div>
+
+                    <div class="staff-subtitle">STAFF MANAGEMENT PORTAL</div>
+
+                    <nav>
+
+                              <div class="nav-label">WORKSPACE</div>
+
+                              <a href="#dashboard">▦ Dashboard</a>
+
+                              <a href="#attendance">◷ Attendance</a>
+
+                              <a href="#tasks">☑ My Tasks</a>
+
+                              <a href="#history">▤ Attendance History</a>
+
+                    </nav>
+
+                    <a href="{{ url_for('staff_logout') }}" class="logout">↪ Logout</a>
+
+          </aside>
+
+          <main class="staff-main">
+
+                    <header class="staff-topbar" id="dashboard">
+
+                              <div>
+
+                                        <h1>Welcome, {{ staff_name }}</h1>
+
+                                        <p>Here's your work overview for today.</p>
+
+                              </div>
+
+                              <div class="staff-profile">
+
+                                        <strong>{{ staff_role }}</strong>
+
+                              </div>
+
+                    </header>
+
+                    <div class="staff-cards">
+
+                              <div class="staff-card">
+
+                                        <p>Pending Tasks</p>
+
+                                        <h2>{{ task_counts.pending }}</h2>
+
+                              </div>
+
+                              <div class="staff-card">
+
+                                        <p>In Progress</p>
+
+                                        <h2>{{ task_counts.in_progress }}</h2>
+
+                              </div>
+
+                              <div class="staff-card">
+
+                                        <p>Completed Tasks</p>
+
+                                        <h2>{{ task_counts.completed }}</h2>
+
+                              </div>
+
+                    </div>
+
+                    <section class="staff-section">
+
+                              <div class="staff-section-header">
+
+                                        <h2>My Work Details</h2>
+
+                                        <p>Your assigned hospital and shift information.</p>
+
+                              </div>
+
+                              <div class="shift-info">
+
+                                        <div class="info-box">
+
+                                                  <span>Hospital</span>
+
+                                                  <strong>{{ hospital_name or 'Not assigned' }}</strong>
+
+                                        </div>
+
+                                        <div class="info-box">
+
+                                                  <span>Assigned Role</span>
+
+                                                  <strong>{{ staff_role }}</strong>
+
+                                        </div>
+
+                                        <div class="info-box">
+
+                                                  <span>Current Shift</span>
+
+                                                  <strong>{{ staff_shift }}</strong>
+
+                                        </div>
+
+                                        <div class="info-box">
+
+                                                  <span>Today's Date</span>
+
+                                                  <strong>{{ today }}</strong>
+
+                                        </div>
+
+                              </div>
+
+                    </section>
+
+                    <section class="staff-section" id="attendance">
+
+                              <div class="staff-section-header">
+
+                                        <h2>Attendance Management</h2>
+
+                                        <p>Record your daily check-in and check-out.</p>
+
+                              </div>
+
+                              <div class="attendance-status">
+
+                                        {% if attendance and attendance.check_in %}
+
+                                                  Check-in recorded at:
+
+                                                  <strong>{{ attendance.check_in }}</strong>
+
+                                        {% else %}
+
+                                                  You have not checked in today.
+
+                                        {% endif %}
+
+                                        {% if attendance and attendance.check_out %}
+
+                                                  <br><br>
+
+                                                  Check-out recorded at:
+
+                                                  <strong>{{ attendance.check_out }}</strong>
+
+                                        {% endif %}
+
+                              </div>
+
+                              <div class="staff-button-row">
+
+                                        <form method="POST" action="{{ url_for('staff_mark_attendance') }}">
+
+                                                  <input type="hidden" name="action" value="check_in">
+
+                                                  <button
+
+                                                            class="staff-btn green"
+
+                                                            type="submit"
+
+                                                            {% if attendance and attendance.check_in %}disabled{% endif %}
+
+                                                  >
+
+                                                            Check In
+
+                                                  </button>
+
+                                        </form>
+
+                                        <form method="POST" action="{{ url_for('staff_mark_attendance') }}">
+
+                                                  <input type="hidden" name="action" value="check_out">
+
+                                                  <button
+
+                                                            class="staff-btn red"
+
+                                                            type="submit"
+
+                                                            {% if not attendance or not attendance.check_in or attendance.check_out %}disabled{% endif %}
+
+                                                  >
+
+                                                            Check Out
+
+                                                  </button>
+
+                                        </form>
+
+                              </div>
+
+                    </section>
+
+                    <section class="staff-section" id="tasks">
+
+                              <div class="staff-section-header">
+
+                                        <h2>My Assigned Tasks</h2>
+
+                                        <p>View your responsibilities and update their progress.</p>
+
+                              </div>
+
+                              <div class="task-list">
+
+                                        {% for task in tasks %}
+
+                                        <div class="task-item">
+
+                                                  <div class="task-top">
+
+                                                            <div>
+
+                                                                      <h3>{{ task.task_title }}</h3>
+
+                                                                      <p>
+
+                                                                                {{ task.description or 'No additional description.' }}
+
+                                                                      </p>
+
+                                                            </div>
+
+                                                            <span class="task-status
+
+                                                                      {% if task.status == 'Completed' %}completed
+
+                                                                      {% elif task.status == 'In Progress' %}in-progress
+
+                                                                      {% endif %}">
+
+                                                                      {{ task.status }}
+
+                                                            </span>
+
+                                                  </div>
+
+                                                  <div class="task-date">
+
+                                                            Due date: {{ task.due_date or 'Not specified' }}
+
+                                                  </div>
+
+                                                  <div class="task-actions">
+
+                                                            <form
+
+                                                                      method="POST"
+
+                                                                      action="{{ url_for('staff_update_task', task_id=task.task_id) }}"
+
+                                                            >
+
+                                                                      <select name="status" required>
+
+                                                                                <option value="Pending"
+
+                                                                                          {% if task.status == 'Pending' %}selected{% endif %}>
+
+                                                                                          Pending
+
+                                                                                </option>
+
+                                                                                <option value="In Progress"
+
+                                                                                          {% if task.status == 'In Progress' %}selected{% endif %}>
+
+                                                                                          In Progress
+
+                                                                                </option>
+
+                                                                                <option value="Completed"
+
+                                                                                          {% if task.status == 'Completed' %}selected{% endif %}>
+
+                                                                                          Completed
+
+                                                                                </option>
+
+                                                                      </select>
+
+                                                                      <button class="staff-btn" type="submit">
+
+                                                                                Update Task
+
+                                                                      </button>
+
+                                                            </form>
+
+                                                  </div>
+
+                                        </div>
+
+                                        {% else %}
+
+                                        <div class="empty">
+
+                                                  No tasks assigned yet.
+
+                                        </div>
+
+                                        {% endfor %}
+
+                              </div>
+
+                    </section>
+
+                    <section class="staff-section" id="history">
+
+                              <div class="staff-section-header">
+
+                                        <h2>Attendance History</h2>
+
+                                        <p>Your latest attendance records.</p>
+
+                              </div>
+
+                              <div class="staff-table-wrap">
+
+                                        <table class="staff-table">
+
+                                                  <thead>
+
+                                                            <tr>
+
+                                                                      <th>Date</th>
+
+                                                                      <th>Status</th>
+
+                                                                      <th>Check In</th>
+
+                                                                      <th>Check Out</th>
+
+                                                            </tr>
+
+                                                  </thead>
+
+                                                  <tbody>
+
+                                                            {% for record in attendance_history %}
+
+                                                            <tr>
+
+                                                                      <td>{{ record.attendance_date }}</td>
+
+                                                                      <td>{{ record.status }}</td>
+
+                                                                      <td>{{ record.check_in or '--' }}</td>
+
+                                                                      <td>{{ record.check_out or '--' }}</td>
+
+                                                            </tr>
+
+                                                            {% else %}
+
+                                                            <tr>
+
+                                                                      <td colspan="4" class="empty">
+
+                                                                                No attendance records found.
+
+                                                                      </td>
+
+                                                            </tr>
+
+                                                            {% endfor %}
+
+                                                  </tbody>
+
+                                        </table>
+
+                              </div>
+
+                    </section>
+
+                    <div class="staff-footer">
+
+                              HealthQueue Healthcare Management System
+
+                    </div>
+
+          </main>
+
+</div>
+
+{% endblock %}

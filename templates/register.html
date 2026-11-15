@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block title %}Book Appointment | HealthQueue{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+.register-page {
+    max-width: 850px;
+    margin: 45px auto;
+    padding: 0 20px;
+    font-family: 'DM Sans', sans-serif;
+    color: #17324f;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.register-header span {
+    color: #1769aa;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.register-header h1 {
+    color: #123c70;
+    font-size: 34px;
+    margin: 12px 0;
+}
+
+.register-header p {
+    color: #718096;
+    line-height: 1.6;
+}
+
+.register-card {
+    background: white;
+    padding: 35px;
+    border-radius: 18px;
+    border: 1px solid #eaf0f6;
+    box-shadow: 0 8px 30px rgba(18,60,112,.07);
+}
+
+.form-section-title {
+    color: #123c70;
+    font-size: 17px;
+    font-weight: 800;
+    margin: 0 0 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    display: block;
+    color: #294765;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    border: 1px solid #dce6f0;
+    border-radius: 9px;
+    background: #fbfdff;
+    color: #17324f;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #1769aa;
+    box-shadow: 0 0 0 3px rgba(23,105,170,.09);
+}
+
+.register-divider {
+    border: 0;
+    border-top: 1px solid #edf1f6;
+    margin: 12px 0 25px;
+}
+
+.register-submit {
+    width: 100%;
+    border: none;
+    border-radius: 9px;
+    padding: 15px;
+    background: #1769aa;
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.register-submit:hover {
+    background: #123c70;
+    transform: translateY(-2px);
+}
+
+.register-note {
+    text-align: center;
+    color: #8292a5;
+    font-size: 11px;
+    margin-top: 18px;
+}
+
+.register-back {
+    display: inline-block;
+    margin-top: 25px;
+    color: #1769aa;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.register-back:hover {
+    text-decoration: underline;
+}
+
+@media(max-width:600px) {
+    .register-card {
+        padding: 23px 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .register-header h1 {
+        font-size: 28px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="register-page">
+
+    <section class="register-header">
+        <span>HEALTHQUEUE APPOINTMENTS</span>
+        <h1>Book Your Appointment</h1>
+        <p>Enter your details and choose a hospital and available doctor.</p>
+    </section>
+
+    <section class="register-card">
+
+        <form method="POST" action="{{ url_for('register') }}">
+
+            <h2 class="form-section-title">
+                <i class="fas fa-user"></i> Patient Details
+            </h2>
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+                    <label for="name">Full Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        min="1"
+                        max="120"
+                        placeholder="Enter your age"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select gender</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Other">Other</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label for="phone">Phone Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        minlength="10"
+                        inputmode="numeric"
+                        placeholder="Enter 10-digit phone number"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <hr class="register-divider">
+
+            <h2 class="form-section-title">
+                <i class="fas fa-hospital"></i> Appointment Details
+            </h2>
+
+            <div class="form-group">
+                <label for="hospital_id">Select Hospital</label>
+                <select id="hospital_id" name="hospital_id" required>
+                    <option value="">Choose a hospital</option>
+
+                    {% for hospital in hospitals %}
+                    <option
+                        value="{{ hospital.hospital_id }}"
+                        {% if selected_hospital|string == hospital.hospital_id|string %}selected{% endif %}
+                    >
+                        {{ hospital.hospital_name }} - {{ hospital.location }}
+                    </option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="doctor_id">Select Doctor</label>
+                <select id="doctor_id" name="doctor_id" required disabled>
+                    <option value="">Choose a hospital first</option>
+
+                    {% for doctor in doctors %}
+                    <option
+                        value="{{ doctor.doctor_id }}"
+                        data-hospital="{{ doctor.hospital_id }}"
+                    >
+                        {{ doctor.doctor_name }} - {{ doctor.department }}
+                    </option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <button type="submit" class="register-submit">
+                Book Appointment <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <p class="register-note">
+                Demo appointment registration for HealthQueue.
+            </p>
+
+        </form>
+
+    </section>
+
+    <a href="{{ url_for('hospitals') }}" class="register-back">
+        <i class="fas fa-arrow-left"></i> Back to Hospitals
+    </a>
+
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const hospitalSelect = document.getElementById("hospital_id");
+    const doctorSelect = document.getElementById("doctor_id");
+
+    const allDoctors = Array.from(
+        doctorSelect.querySelectorAll("option[data-hospital]")
+    );
+
+    function filterDoctors() {
+        const hospitalId = hospitalSelect.value;
+        const previouslySelectedDoctor = doctorSelect.value;
+
+        doctorSelect.innerHTML = "";
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+
+        if (!hospitalId) {
+            placeholder.textContent = "Choose a hospital first";
+            doctorSelect.disabled = true;
+            doctorSelect.appendChild(placeholder);
+            return;
+        }
+
+        placeholder.textContent = "Choose a doctor";
+        doctorSelect.appendChild(placeholder);
+
+        const matchingDoctors = allDoctors.filter(function (doctor) {
+            return doctor.dataset.hospital === hospitalId;
+        });
+
+        matchingDoctors.forEach(function (doctor) {
+            const option = doctor.cloneNode(true);
+            doctorSelect.appendChild(option);
+        });
+
+        doctorSelect.disabled = matchingDoctors.length === 0;
+
+        if (matchingDoctors.length === 0) {
+            placeholder.textContent = "No doctors available";
+        } else if (matchingDoctors.some(function (doctor) {
+            return doctor.value === previouslySelectedDoctor;
+        })) {
+            doctorSelect.value = previouslySelectedDoctor;
+        }
+    }
+
+    hospitalSelect.addEventListener("change", filterDoctors);
+    filterDoctors();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Consultation | HealthQueue{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    .consultation-container {
+        max-width:850px;
+        margin:40px auto;
+        padding:0 20px;
+        font-family:'DM Sans',sans-serif;
+        color:#17324f;
+    }
+
+    .consultation-card {
+        background:white;
+        padding:30px;
+        border-radius:16px;
+        box-shadow:0 5px 25px #123c7010;
+        margin-bottom:22px;
+    }
+
+    .consultation-card h1,
+    .consultation-card h2 {
+        color:#123c70;
+    }
+
+    .consultation-card h1 {
+        margin-top:0;
+    }
+
+    .patient-details {
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:18px;
+    }
+
+    .detail span {
+        display:block;
+        color:#718096;
+        font-size:13px;
+        margin-bottom:5px;
+    }
+
+    .detail strong {
+        color:#17324f;
+    }
+
+    .consultation-card label {
+        display:block;
+        font-weight:700;
+        margin:20px 0 8px;
+    }
+
+    .consultation-card input,
+    .consultation-card textarea {
+        width:100%;
+        padding:13px;
+        border:1px solid #d5dfeb;
+        border-radius:9px;
+        font:inherit;
+        box-sizing:border-box;
+    }
+
+    .consultation-card textarea {
+        min-height:100px;
+        resize:vertical;
+    }
+
+    .consultation-card input:focus,
+    .consultation-card textarea:focus {
+        outline:2px solid #39a8df;
+        border-color:transparent;
+    }
+
+    .save-button {
+        margin-top:22px;
+        padding:14px 22px;
+        background:#1769aa;
+        color:white;
+        border:0;
+        border-radius:9px;
+        font-weight:700;
+        font-size:15px;
+        cursor:pointer;
+    }
+
+    .save-button:hover {
+        background:#123c70;
+    }
+
+    .notice {
+        background:#eaf4fc;
+        color:#345;
+        padding:13px;
+        border-radius:9px;
+        font-size:13px;
+        margin-top:20px;
+    }
+
+    .error {
+        background:#fff0f0;
+        color:#c0392b;
+        padding:12px;
+        border-radius:8px;
+    }
+
+    .success {
+        background:#e3f8ec;
+        color:#16834c;
+        padding:12px;
+        border-radius:8px;
+    }
+
+    .back-link {
+        display:inline-block;
+        margin-top:20px;
+        color:#1769aa;
+        font-weight:700;
+        text-decoration:none;
+    }
+
+    .back-link:hover {
+        text-decoration:underline;
+    }
+
+    @media(max-width:550px) {
+        .patient-details {
+            grid-template-columns:1fr;
+        }
+
+        .consultation-card {
+            padding:20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="consultation-container">
+
+    <section class="consultation-card">
+        <h1>Patient Consultation</h1>
+        <p>Review patient details and record the consultation.</p>
+
+        <div class="patient-details">
+            <div class="detail">
+                <span>Patient Name</span>
+                <strong>{{ patient['name'] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Token Number</span>
+                <strong>{{ patient['token_number'] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Age</span>
+                <strong>{{ patient['age'] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Gender</span>
+                <strong>{{ patient['gender'] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Phone</span>
+                <strong>{{ patient['phone'] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Department</span>
+                <strong>{{ patient['department'] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Queue Status</span>
+                <strong>{{ patient['queue_status'] }}</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="consultation-card">
+        <h2>Consultation Record</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if success %}
+            <p class="success">{{ success }}</p>
+        {% endif %}
+
+        <form method="POST">
+
+            <label for="diagnosis">Diagnosis</label>
+            <textarea
+                id="diagnosis"
+                name="diagnosis"
+                placeholder="Enter diagnosis"
+                required
+            >{{ consultation['diagnosis'] if consultation else '' }}</textarea>
+
+            <label for="notes">Consultation Notes</label>
+            <textarea
+                id="notes"
+                name="notes"
+                placeholder="Enter examination findings and notes"
+            >{{ consultation['notes'] if consultation else '' }}</textarea>
+
+            <label for="prescription">Prescription</label>
+            <textarea
+                id="prescription"
+                name="prescription"
+                placeholder="Enter prescribed medicines and instructions"
+            >{{ consultation['prescription'] if consultation else '' }}</textarea>
+
+            <label for="follow_up_date">Follow-up Date</label>
+            <input
+                type="date"
+                id="follow_up_date"
+                name="follow_up_date"
+                value="{{ consultation['follow_up_date'] if consultation and consultation['follow_up_date'] else '' }}"
+            >
+
+            <div class="notice">
+                Demo project record only. Prescriptions and medical decisions must be made by a qualified healthcare professional.
+            </div>
+
+            <button type="submit" class="save-button">
+                Save Consultation
+            </button>
+        </form>
+
+        <a href="{{ url_for('doctor_dashboard') }}" class="back-link">
+            ← Back to Doctor Dashboard
+        </a>
+    </section>
+
+</main>
+{% endblock %}

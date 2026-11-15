@@ -1,278 +1,260 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthQueue | Smart Hospital Management</title>
+{% block title %}HealthQueue | Smarter Healthcare Management{% endblock %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
+{% block head %}
+<meta name="description" content="HealthQueue is a smart healthcare management platform for appointments, hospital services and digital queue management.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% endblock %}
 
-<body>
-
-<!-- TOP BAR -->
-<div class="topbar">
-    <div>
-        <span><i class="fa-regular fa-clock"></i> Mon - Sat: 8:00 AM - 8:00 PM</span>
-        <span><i class="fa-solid fa-phone"></i> Emergency: +91 98765 43210</span>
-    </div>
-    <span><i class="fa-solid fa-location-dot"></i> Bengaluru, Karnataka</span>
-</div>
-
-<!-- NAVIGATION -->
-<header class="navbar">
-    <a href="/" class="brand">
-        <i class="fa-solid fa-heart-pulse"></i>
-        <div>
-            <h2>HealthQueue</h2>
-            <small>SMART HEALTHCARE</small>
-        </div>
-    </a>
-
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About Us</a>
-        <a href="#services">Services</a>
-        <a href="#features">Features</a>
-        <a href="#contact">Contact</a>
-    </nav>
-
-    <a href="/register" class="nav-button">
-        <i class="fa-solid fa-ticket"></i> Get a Token
-    </a>
-</header>
+{% block content %}
 
 <!-- HERO SECTION -->
-<section class="hero" id="home">
-
+<section class="hero">
     <div class="hero-content">
-        <span class="eyebrow">YOUR HEALTH, OUR PRIORITY</span>
+        <span class="eyebrow">
+            <i class="fas fa-circle-check"></i>
+            SMARTER HEALTHCARE STARTS HERE
+        </span>
 
-
-<h1>
-    Compassionate Care.<br>
-    Better Health.<br>
-    <span>Smarter Queues.</span>
-</h1>
-
+        <h1>
+            Healthcare made
+            <span>simpler.</span>
+            Care made smarter.
+        </h1>
 
         <p>
-            Experience a better healthcare journey with digital
-            registration, smart token generation and real-time
-            patient queue management.
+            One connected platform for hospital discovery, doctor appointments,
+            digital tokens and smarter patient management.
         </p>
 
         <div class="hero-buttons">
-            <a href="/register" class="primary-button">
-                <i class="fa-solid fa-calendar-check"></i>
-                Get Your Token
+            <a href="{{ url_for('hospitals') }}" class="primary-button">
+                Explore Hospitals <i class="fas fa-arrow-right"></i>
             </a>
-
-            <a href="#features" class="outline-button">
-                Explore Features <i class="fa-solid fa-arrow-right"></i>
+            <a href="#services" class="outline-button">
+                Discover Services
             </a>
         </div>
 
         <div class="hero-note">
-            <i class="fa-solid fa-shield-heart"></i>
-            Simple. Smart. Patient-focused.
+            <i class="fas fa-shield-heart"></i>
+            One platform. A more organised healthcare journey.
         </div>
     </div>
-
-    <div class="hero-image">
-        
-
 </section>
 
-<!-- TRUST FEATURES -->
-<section class="trust-section" id="features">
-
+<!-- TRUST SECTION -->
+<section class="trust-section">
     <div class="trust-item">
-        <i class="fa-solid fa-user-doctor"></i>
+        <i class="fas fa-hospital"></i>
         <div>
-            <h3>Patient First</h3>
-            <p>Patient-focused healthcare management.</p>
+            <h3>Hospital Discovery</h3>
+            <p>Explore connected demo hospitals</p>
         </div>
     </div>
 
     <div class="trust-item">
-        <i class="fa-solid fa-heart-pulse"></i>
+        <i class="fas fa-calendar-check"></i>
         <div>
-            <h3>Smart Technology</h3>
-            <p>Digital tools for efficient services.</p>
+            <h3>Easy Appointments</h3>
+            <p>Simple digital registration</p>
         </div>
     </div>
 
     <div class="trust-item">
-        <i class="fa-solid fa-shield-heart"></i>
+        <i class="fas fa-ticket"></i>
         <div>
-            <h3>Reliable System</h3>
-            <p>Organised and secure patient records.</p>
+            <h3>Digital Tokens</h3>
+            <p>Organised patient queues</p>
         </div>
     </div>
 
     <div class="trust-item">
-        <i class="fa-solid fa-clock"></i>
+        <i class="fas fa-chart-line"></i>
         <div>
-            <h3>Less Waiting</h3>
-            <p>Better queue visibility and management.</p>
+            <h3>Queue Tracking</h3>
+            <p>Follow your queue progress</p>
         </div>
     </div>
-
 </section>
 
 <!-- SERVICES -->
-<section class="services section" id="services">
-
+<section class="section" id="services">
     <div class="section-title">
-        <span>OUR SERVICES</span>
-        <h2>Healthcare Made Convenient</h2>
-        <p>Smart solutions designed to improve every patient interaction.</p>
+        <span>WHAT WE OFFER</span>
+        <h2>Healthcare services, all in one place.</h2>
+        <p>Everything designed to make healthcare management simpler.</p>
     </div>
 
     <div class="service-grid">
-
         <div class="service-card">
-            <div class="service-icon"><i class="fa-solid fa-user-plus"></i></div>
-            <h3>Patient Registration</h3>
-            <p>Easy digital registration with organised patient information.</p>
-            <a href="/register">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-icon"><i class="fas fa-hospital"></i></div>
+            <h3>Hospital Discovery</h3>
+            <p>Explore hospitals, departments and available healthcare services.</p>
+            <a href="{{ url_for('hospitals') }}">Explore Hospitals <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="service-card">
-            <div class="service-icon"><i class="fa-solid fa-ticket"></i></div>
-            <h3>Digital Tokens</h3>
-            <p>Generate unique tokens and simplify patient appointments.</p>
-            <a href="/register">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-icon"><i class="fas fa-calendar-check"></i></div>
+            <h3>Appointments</h3>
+            <p>Register your details and begin your appointment journey.</p>
+            <a href="{{ url_for('register') }}">Book Appointment <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="service-card">
-            <div class="service-icon"><i class="fa-solid fa-list-ol"></i></div>
-            <h3>Queue Tracking</h3>
-            <p>Track the current token and see your position in the queue.</p>
-            <a href="/queue">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-icon"><i class="fas fa-ticket"></i></div>
+            <h3>Digital Queue</h3>
+            <p>Track your token and check your position in the waiting queue.</p>
+            <a href="{{ url_for('queue_dashboard') }}">View Queue <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="service-card">
-            <div class="service-icon"><i class="fa-solid fa-brain"></i></div>
-            <h3>AI Predictions</h3>
-            <p>Estimate patient waiting times using intelligent predictions.</p>
-            <a href="#features">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-icon"><i class="fas fa-stethoscope"></i></div>
+            <h3>Medical Specialities</h3>
+            <p>Discover medical departments and explore speciality services.</p>
+            <a href="{{ url_for('hospitals') }}">Find Specialities <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="service-card">
-            <div class="service-icon"><i class="fa-solid fa-user-doctor"></i></div>
-            <h3>Doctor Dashboard</h3>
-            <p>Manage patient appointments and monitor the queue.</p>
-            <a href="/doctor">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-icon"><i class="fas fa-user-doctor"></i></div>
+            <h3>Doctor Portal</h3>
+            <p>Access the doctor portal and manage patient queues.</p>
+            <a href="{{ url_for('doctor_login') }}">Open Doctor Portal <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="service-card">
-            <div class="service-icon"><i class="fa-solid fa-hospital"></i></div>
-            <h3>Admin Dashboard</h3>
-            <p>Manage hospital operations and patient information.</p>
-            <a href="/admin">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="service-icon"><i class="fas fa-bed"></i></div>
+            <h3>Patient Management</h3>
+            <p>Bring patient information and healthcare workflows together.</p>
+            <a href="{{ url_for('register') }}">Get Started <i class="fas fa-arrow-right"></i></a>
         </div>
+    </div>
+</section>
 
+<!-- PATIENT PORTAL -->
+<section class="section" id="patient-portal">
+    <div class="section-title">
+        <span>PATIENT PORTAL</span>
+        <h2>Your healthcare, in one dashboard.</h2>
+        <p>Access your account, appointments and queue information.</p>
     </div>
 
-    <a href="/register" class="all-services">Get Started Today <i class="fa-solid fa-arrow-right"></i></a>
+    <div class="service-grid">
+        {% if session.get('role') == 'patient' %}
+        <div class="service-card">
+            <div class="service-icon"><i class="fas fa-user-circle"></i></div>
+            <h3>My Dashboard</h3>
+            <p>View your appointments and patient information.</p>
+            <a href="{{ url_for('patient_dashboard') }}">Open Dashboard <i class="fas fa-arrow-right"></i></a>
+        </div>
 
+        <div class="service-card">
+            <div class="service-icon"><i class="fas fa-calendar-plus"></i></div>
+            <h3>New Appointment</h3>
+            <p>Register for another hospital appointment.</p>
+            <a href="{{ url_for('register') }}">Book Appointment <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon"><i class="fas fa-right-from-bracket"></i></div>
+            <h3>Logout</h3>
+            <p>Securely end your current patient session.</p>
+            <a href="{{ url_for('logout') }}">Logout <i class="fas fa-arrow-right"></i></a>
+        </div>
+        {% else %}
+        <div class="service-card">
+            <div class="service-icon"><i class="fas fa-user-lock"></i></div>
+            <h3>Patient Login</h3>
+            <p>Access your existing HealthQueue patient account.</p>
+            <a href="{{ url_for('login') }}">Login <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon"><i class="fas fa-user-plus"></i></div>
+            <h3>Create Account</h3>
+            <p>Register for a patient account and access your dashboard.</p>
+            <a href="{{ url_for('signup') }}">Create Account <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon"><i class="fas fa-calendar-check"></i></div>
+            <h3>Book Appointment</h3>
+            <p>Choose a hospital and doctor to generate your digital token.</p>
+            <a href="{{ url_for('register') }}">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+        {% endif %}
+    </div>
 </section>
 
 <!-- STATISTICS -->
 <section class="statistics">
-
     <div class="stat">
-        <i class="fa-solid fa-users"></i>
-        <h2>01</h2>
-        <p>Patient Registration</p>
+        <i class="fas fa-hospital"></i>
+        <h2>Multi</h2>
+        <p>Hospital Platform</p>
     </div>
-
     <div class="stat">
-        <i class="fa-solid fa-ticket"></i>
-        <h2>02</h2>
-        <p>Digital Token System</p>
+        <i class="fas fa-clock"></i>
+        <h2>24/7</h2>
+        <p>Digital Access</p>
     </div>
-
     <div class="stat">
-        <i class="fa-solid fa-chart-line"></i>
-        <h2>03</h2>
-        <p>Queue Monitoring</p>
+        <i class="fas fa-ticket"></i>
+        <h2>Smart</h2>
+        <p>Queue Management</p>
     </div>
-
     <div class="stat">
-        <i class="fa-solid fa-clock"></i>
-        <h2>04</h2>
-        <p>Waiting Time Prediction</p>
+        <i class="fas fa-heart"></i>
+        <h2>Patient</h2>
+        <p>Centred Experience</p>
     </div>
-
 </section>
 
 <!-- ABOUT -->
-<section class="about section" id="about">
+<section class="section" id="about">
+    <div class="about">
+        <div class="about-image"></div>
+        <div class="about-content">
+            <span>ABOUT HEALTHQUEUE</span>
+            <h2>Making healthcare more accessible.</h2>
+            <p>
+                HealthQueue is a smart healthcare management platform
+                designed to simplify the way patients interact with
+                healthcare services.
+            </p>
+            <p>
+                From exploring hospitals and managing appointments to
+                tracking digital tokens, our goal is to make healthcare
+                journeys more organised and convenient.
+            </p>
 
-    <div class="about-image"></div>
+            <div class="about-points">
+                <p><i class="fas fa-check-circle"></i> Simplified patient registration</p>
+                <p><i class="fas fa-check-circle"></i> Digital token generation</p>
+                <p><i class="fas fa-check-circle"></i> Smarter queue management</p>
+                <p><i class="fas fa-check-circle"></i> Connected healthcare workflows</p>
+            </div>
 
-    <div class="about-content">
-        <span>ABOUT HEALTHQUEUE</span>
-        <h2>Transforming Healthcare Through Technology</h2>
-
-        <p>
-            HealthQueue is a Smart Hospital Service Management System
-            designed to make hospital visits more organised and efficient.
-        </p>
-
-        <p>
-            Through digital tokens, real-time queue tracking and
-            AI-based waiting time prediction, we aim to reduce
-            unnecessary waiting and improve the patient experience.
-        </p>
-
-        <div class="about-points">
-            <p><i class="fa-solid fa-circle-check"></i> Smart digital token generation</p>
-            <p><i class="fa-solid fa-circle-check"></i> Real-time queue monitoring</p>
-            <p><i class="fa-solid fa-circle-check"></i> Intelligent waiting time prediction</p>
+            <a href="{{ url_for('hospitals') }}" class="primary-button">
+                Discover HealthQueue <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
-
-        <a href="#services" class="primary-button">Discover More</a>
     </div>
-
 </section>
 
 <!-- APPOINTMENT CTA -->
-<section class="appointment" id="contact">
+<section class="appointment">
     <div>
-        <span>START YOUR HEALTHCARE JOURNEY</span>
-        <h2>Your Time Matters. Your Health Matters More.</h2>
-        <p>Register online and get your digital token without standing in long queues.</p>
+        <span>YOUR HEALTHCARE JOURNEY STARTS HERE</span>
+        <h2>Less waiting. More organised care.</h2>
+        <p>Explore healthcare services and experience smarter queue management.</p>
     </div>
 
-    <a href="/register" class="appointment-button">
-        Get Your Token <i class="fa-solid fa-arrow-right"></i>
+    <a href="{{ url_for('register') }}" class="appointment-button">
+        Get Started <i class="fas fa-arrow-right"></i>
     </a>
 </section>
 
-<!-- FOOTER -->
-<footer>
-    <div class="footer-brand">
-        <h2><i class="fa-solid fa-heart-pulse"></i> HealthQueue</h2>
-        <p>Smarter queues. Better healthcare.</p>
-    </div>
-
-    <div class="footer-links">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#contact">Contact</a>
-    </div>
-
-    <p class="copyright">© 2026 HealthQueue. All rights reserved.</p>
-</footer>
-
-</body>
-</html>
+{% endblock %}

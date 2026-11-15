@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Track Appointment | HealthQueue{% endblock %}
+
+{% block head %}
+<style>
+    .track-page {
+        max-width: 1000px;
+        margin: 48px auto;
+        padding: 0 20px;
+    }
+    .track-heading {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .track-heading h1 {
+        color: #123c70;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        margin-bottom: 8px;
+    }
+    .track-heading p {
+        color: #64748b;
+    }
+    .track-card {
+        max-width: 560px;
+        margin: 0 auto 28px;
+        padding: 30px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        box-shadow: 0 12px 35px rgba(18, 60, 112, .08);
+    }
+    .track-card label {
+        display: block;
+        color: #243b53;
+        font-weight: 700;
+        margin: 16px 0 7px;
+    }
+    .track-card input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 9px;
+        font: inherit;
+    }
+    .track-card input:focus {
+        outline: 2px solid #93c5fd;
+        border-color: #2563eb;
+    }
+    .track-submit {
+        width: 100%;
+        margin-top: 22px;
+        padding: 13px 18px;
+        border: 0;
+        border-radius: 9px;
+        background: #1769aa;
+        color: white;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .track-submit:hover { background: #123c70; }
+    .track-error {
+        max-width: 560px;
+        margin: 0 auto 20px;
+        padding: 13px 16px;
+        color: #991b1b;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 10px;
+    }
+    .appointment-card {
+        padding: 28px;
+        background: #fff;
+        border: 1px solid #dbeafe;
+        border-radius: 18px;
+        box-shadow: 0 12px 35px rgba(18, 60, 112, .08);
+    }
+    .appointment-card h2 {
+        color: #123c70;
+        margin-top: 0;
+    }
+    .appointment-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+    .appointment-item {
+        padding: 14px;
+        background: #f8fafc;
+        border-radius: 10px;
+    }
+    .appointment-item small {
+        display: block;
+        color: #64748b;
+        margin-bottom: 5px;
+    }
+    .appointment-item strong { color: #1e293b; }
+    .track-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+    }
+    .track-actions a {
+        display: inline-block;
+        padding: 11px 16px;
+        border-radius: 9px;
+        background: #1769aa;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+    }
+    .track-actions a.secondary {
+        color: #1769aa;
+        background: #eff6ff;
+    }
+    @media (max-width: 600px) {
+        .appointment-grid { grid-template-columns: 1fr; }
+        .track-card, .appointment-card { padding: 22px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="track-page">
+    <div class="track-heading">
+        <h1>Track Your Appointment</h1>
+        <p>Enter the phone number used during registration and your token number.</p>
+    </div>
+
+    {% if error %}
+        <div class="track-error" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form class="track-card" method="POST" action="{{ url_for('track_appointment') }}">
+        <label for="phone">Phone Number</label>
+        <input
+            type="tel"
+            id="phone"
+            name="phone"
+            inputmode="numeric"
+            pattern="[0-9]{10}"
+            maxlength="10"
+            placeholder="Enter your 10-digit phone number"
+            autocomplete="tel"
+            required
+        >
+
+        <label for="token">Token Number</label>
+        <input
+            type="text"
+            id="token"
+            name="token"
+            placeholder="Example: HQ-00001"
+            autocomplete="off"
+            required
+        >
+
+        <button class="track-submit" type="submit">Find My Appointment</button>
+    </form>
+
+    {% if appointment %}
+        <section class="appointment-card" aria-live="polite">
+            <h2>Appointment Details</h2>
+            <div class="appointment-grid">
+                <div class="appointment-item">
+                    <small>Patient Name</small>
+                    <strong>{{ appointment.name }}</strong>
+                </div>
+                <div class="appointment-item">
+                    <small>Token Number</small>
+                    <strong>{{ appointment.token_number }}</strong>
+                </div>
+                <div class="appointment-item">
+                    <small>Hospital</small>
+                    <strong>{{ appointment.hospital_name or 'Not available' }}</strong>
+                </div>
+                <div class="appointment-item">
+                    <small>Doctor</small>
+                    <strong>{{ appointment.doctor_name or 'Not assigned' }}</strong>
+                </div>
+                <div class="appointment-item">
+                    <small>Department</small>
+                    <strong>{{ appointment.department }}</strong>
+                </div>
+                <div class="appointment-item">
+                    <small>Queue Position</small>
+                    <strong>{{ appointment.queue_position }}</strong>
+                </div>
+                <div class="appointment-item">
+                    <small>Queue Status</small>
+                    <strong>{{ appointment.queue_status }}</strong>
+                </div>
+            </div>
+            <div class="track-actions">
+                <a href="{{ url_for('queue_dashboard') }}">View Live Queue</a>
+                <a class="secondary" href="{{ url_for('register') }}">Book Another Appointment</a>
+            </div>
+        </section>
+    {% endif %}
+</section>
+{% endblock %}

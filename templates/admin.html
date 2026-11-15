@@ -1,0 +1,318 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | HealthQueue{% endblock %}
+
+{% block head %}
+<style>
+.admin-page{max-width:1450px;margin:auto;padding:30px 22px;color:#172033}
+.admin-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:25px}
+.admin-header h1{color:#123c70;margin-bottom:5px}
+.admin-header p{color:#778197}
+.admin-btn{display:inline-block;padding:10px 15px;background:#1769aa;color:white;border:0;border-radius:8px;text-decoration:none;cursor:pointer;font-weight:600}
+.admin-btn:hover{background:#123c70;color:white}
+.danger{background:#c03939}
+.secondary{background:#edf4fa;color:#1769aa}
+.admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:25px}
+.stat-card,.admin-section,.admin-sidebar{background:white;border:1px solid #e8edf0;border-radius:13px;padding:18px;box-shadow:0 4px 15px #14283c08}
+.stat-card span{display:block;color:#778197;font-size:13px;margin-bottom:8px}
+.stat-card strong{font-size:25px;color:#123c70}
+.admin-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:start}
+.admin-sidebar{position:sticky;top:15px}
+.admin-sidebar a{display:block;padding:11px;color:#526071;text-decoration:none;border-radius:8px;font-weight:600}
+.admin-sidebar a:hover{background:#edf7ff;color:#1769aa}
+.admin-section{margin-bottom:22px;scroll-margin-top:15px}
+.admin-section h2{color:#123c70;margin-top:0}
+.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;background:#f8fafb;padding:15px;border-radius:10px;margin-bottom:20px}
+.admin-form input,.admin-form select,.admin-form textarea,.inline-form input,.inline-form select{width:100%;padding:10px;border:1px solid #dce3e8;border-radius:7px;box-sizing:border-box;font:inherit}
+.admin-form button{justify-self:start}
+.full-width{grid-column:1/-1}
+.admin-table-wrap{width:100%;overflow-x:auto}
+.admin-table{width:100%;border-collapse:collapse;min-width:600px;font-size:13px}
+.admin-table th{text-align:left;background:#f2f7fb;color:#667085;padding:12px}
+.admin-table td{padding:12px;border-bottom:1px solid #edf0f2}
+.inline-form{display:flex;gap:7px;align-items:center}
+.inline-form select,.inline-form input{min-width:90px}
+.status{padding:5px 9px;border-radius:20px;background:#e9f7ef;color:#23834d;font-size:12px}
+.status.inactive{background:#fff0ee;color:#c03939}
+.empty-state{text-align:center;color:#929baa;padding:20px}
+@media(max-width:800px){.admin-layout{grid-template-columns:1fr}.admin-sidebar{position:static;display:flex;flex-wrap:wrap}.admin-form{grid-template-columns:1fr}.full-width{grid-column:auto}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+
+<header class="admin-header">
+    <div>
+        <h1>Admin Dashboard</h1>
+        <p>Welcome back, {{ admin_name or "Administrator" }}. Manage HealthQueue.</p>
+    </div>
+    <a href="/admin/logout" class="admin-btn danger">Logout</a>
+</header>
+
+<section class="admin-stats">
+    <div class="stat-card"><span>Total Hospitals</span><strong>{{ stats.hospitals }}</strong></div>
+    <div class="stat-card"><span>Total Doctors</span><strong>{{ stats.doctors }}</strong></div>
+    <div class="stat-card"><span>Total Patients</span><strong>{{ stats.patients }}</strong></div>
+    <div class="stat-card"><span>Total Staff</span><strong>{{ stats.staff }}</strong></div>
+    <div class="stat-card"><span>Total Beds</span><strong>{{ stats.beds }}</strong></div>
+    <div class="stat-card"><span>Available Beds</span><strong>{{ stats.available_beds }}</strong></div>
+    <div class="stat-card"><span>Medicine Records</span><strong>{{ stats.medicines }}</strong></div>
+</section>
+
+<div class="admin-layout">
+
+<nav class="admin-sidebar">
+    <a href="#hospitals">Hospitals</a>
+    <a href="#doctors">Doctors</a>
+    <a href="#staff">Staff</a>
+    <a href="#beds">Bed Management</a>
+    <a href="#medicines">Medicine Inventory</a>
+    <a href="#tasks">Staff Tasks</a>
+</nav>
+
+<main>
+
+<!-- HOSPITALS -->
+<section class="admin-section" id="hospitals">
+<h2>Hospital Management</h2>
+
+<form method="POST" action="/admin/hospitals/add" class="admin-form">
+    <input name="hospital_name" placeholder="Hospital name" required>
+    <input name="location" placeholder="Location" required>
+    <input name="phone" placeholder="Phone number">
+    <input name="email" type="email" placeholder="Email">
+    <button class="admin-btn" type="submit">Add Hospital</button>
+</form>
+
+<div class="admin-table-wrap">
+<table class="admin-table">
+<thead><tr><th>Hospital</th><th>Location</th><th>Phone</th><th>Email</th><th>Status</th><th>Action</th></tr></thead>
+<tbody>
+{% for hospital in hospitals %}
+<tr>
+<td>{{ hospital['hospital_name'] }}</td>
+<td>{{ hospital['location'] }}</td>
+<td>{{ hospital['phone'] or 'Not added' }}</td>
+<td>{{ hospital['email'] or 'Not added' }}</td>
+<td>{{ hospital['status'] }}</td>
+<td>
+<form method="POST" action="/admin/hospitals/{{ hospital['hospital_id'] }}/status">
+<button class="admin-btn secondary" type="submit">
+{% if hospital['status'] == 'Active' %}Deactivate{% else %}Activate{% endif %}
+</button>
+</form>
+</td>
+</tr>
+{% else %}
+<tr><td colspan="6" class="empty-state">No hospitals added.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- DOCTORS -->
+<section class="admin-section" id="doctors">
+<h2>Doctor Management</h2>
+
+<form method="POST" action="/admin/doctors/add" class="admin-form">
+    <input name="doctor_name" placeholder="Doctor name" required>
+    <input name="department" placeholder="Department / Speciality" required>
+    <input name="phone" placeholder="Phone number" required>
+    <select name="hospital_id" required>
+        <option value="">Select hospital</option>
+        {% for hospital in hospitals %}
+            {% if hospital['status'] == 'Active' %}
+            <option value="{{ hospital['hospital_id'] }}">{{ hospital['hospital_name'] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <button class="admin-btn" type="submit">Add Doctor</button>
+</form>
+
+<div class="admin-table-wrap">
+<table class="admin-table">
+<thead><tr><th>Doctor</th><th>Department</th><th>Phone</th><th>Hospital</th></tr></thead>
+<tbody>
+{% for doctor in doctors %}
+<tr>
+<td>{{ doctor['doctor_name'] }}</td>
+<td>{{ doctor['department'] }}</td>
+<td>{{ doctor['phone'] }}</td>
+<td>{{ doctor['hospital_name'] or 'Not assigned' }}</td>
+</tr>
+{% else %}
+<tr><td colspan="4" class="empty-state">No doctors registered.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- STAFF -->
+<section class="admin-section" id="staff">
+<h2>Staff Management</h2>
+
+<form method="POST" action="/admin/staff/add" class="admin-form">
+    <input name="staff_name" placeholder="Staff name" required>
+    <select name="role" required>
+        <option value="">Select role</option>
+        <option>Receptionist</option>
+        <option>Nurse</option>
+        <option>Pharmacist</option>
+        <option>Ward Staff</option>
+        <option>Lab Technician</option>
+    </select>
+    <input name="phone" placeholder="Phone number" required>
+    <select name="hospital_id" required>
+        <option value="">Select hospital</option>
+        {% for hospital in hospitals %}
+            {% if hospital['status'] == 'Active' %}
+            <option value="{{ hospital['hospital_id'] }}">{{ hospital['hospital_name'] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <select name="shift" required>
+        <option value="">Select shift</option>
+        <option>Morning</option>
+        <option>Evening</option>
+        <option>Night</option>
+        <option>Rotational</option>
+    </select>
+    <button class="admin-btn" type="submit">Add Staff</button>
+</form>
+
+<div class="admin-table-wrap">
+<table class="admin-table">
+<thead><tr><th>Name</th><th>Role</th><th>Phone</th><th>Hospital</th><th>Shift</th></tr></thead>
+<tbody>
+{% for member in staff %}
+<tr>
+<td>{{ member['staff_name'] }}</td>
+<td>{{ member['role'] }}</td>
+<td>{{ member['phone'] }}</td>
+<td>{{ member['hospital_name'] or 'Not assigned' }}</td>
+<td>{{ member['shift'] or 'Not assigned' }}</td>
+</tr>
+{% else %}
+<tr><td colspan="5" class="empty-state">No staff members added.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- BEDS -->
+<section class="admin-section" id="beds">
+<h2>Bed Management</h2>
+
+<form method="POST" action="/admin/beds/add" class="admin-form">
+    <select name="hospital_id" required>
+        <option value="">Select hospital</option>
+        {% for hospital in hospitals %}
+            {% if hospital['status'] == 'Active' %}
+            <option value="{{ hospital['hospital_id'] }}">{{ hospital['hospital_name'] }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <input name="ward" placeholder="Ward name" required>
+    <input name="bed_number" placeholder="Bed number" required>
+    <button class="admin-btn" type="submit">Add Bed</button>
+</form>
+
+<div class="admin-table-wrap">
+<table class="admin-table">
+<thead><tr><th>Hospital</th><th>Ward</th><th>Bed Number</th><th>Status</th><th>Update</th></tr></thead>
+<tbody>
+{% for bed in beds %}
+<tr>
+<td>{{ bed['hospital_name'] }}</td>
+<td>{{ bed['ward'] }}</td>
+<td>{{ bed['bed_number'] }}</td>
+<td>{{ bed['status'] }}</td>
+<td>
+<form method="POST" action="/admin/beds/{{ bed['bed_id'] }}/status" class="inline-form">
+<select name="status">
+<option value="Available" {% if bed['status'] == 'Available' %}selected{% endif %}>Available</option>
+<option value="Occupied" {% if bed['status'] == 'Occupied' %}selected{% endif %}>Occupied</option>
+<option value="Maintenance" {% if bed['status'] == 'Maintenance' %}selected{% endif %}>Maintenance</option>
+</select>
+<button class="admin-btn" type="submit">Update</button>
+</form>
+</td>
+</tr>
+{% else %}
+<tr><td colspan="5" class="empty-state">No beds registered.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- MEDICINES -->
+<section class="admin-section" id="medicines">
+<h2>Medicine Inventory</h2>
+
+<form method="POST" action="/admin/medicines/add" class="admin-form">
+    <input name="medicine_name" placeholder="Medicine name" required>
+    <input type="number" name="quantity" min="0" placeholder="Quantity" required>
+    <input name="unit" placeholder="Unit (tablets, bottles, etc.)" required>
+    <select name="hospital_id">
+        <option value="">Select hospital (optional)</option>
+        {% for hospital in hospitals %}
+        <option value="{{ hospital['hospital_id'] }}">{{ hospital['hospital_name'] }}</option>
+        {% endfor %}
+    </select>
+    <button class="admin-btn" type="submit">Add Medicine</button>
+</form>
+
+<div class="admin-table-wrap">
+<table class="admin-table">
+<thead><tr><th>Medicine</th><th>Hospital</th><th>Stock</th><th>Update Quantity</th></tr></thead>
+<tbody>
+{% for medicine in medicines %}
+<tr>
+<td>{{ medicine['medicine_name'] }}</td>
+<td>{{ medicine['hospital_name'] or 'Not assigned' }}</td>
+<td>{{ medicine['quantity'] }} {{ medicine['unit'] }}</td>
+<td>
+<form method="POST" action="/admin/medicines/{{ medicine['medicine_id'] }}/update" class="inline-form">
+<input type="number" name="quantity" min="0" value="{{ medicine['quantity'] }}" required>
+<button class="admin-btn" type="submit">Update</button>
+</form>
+</td>
+</tr>
+{% else %}
+<tr><td colspan="4" class="empty-state">No medicines added.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- TASKS -->
+<section class="admin-section" id="tasks">
+<h2>Staff Task Assignment</h2>
+
+<form method="POST" action="/admin/tasks/add" class="admin-form">
+    <select name="staff_id" required>
+        <option value="">Select staff member</option>
+        {% for member in staff %}
+        {% if member['status'] == 'Active' %}
+        <option value="{{ member['staff_id'] }}">{{ member['staff_name'] }} - {{ member['role'] }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+    <input name="task_title" placeholder="Task title" required>
+    <textarea name="description" class="full-width" placeholder="Task description"></textarea>
+    <input type="date" name="due_date">
+    <button class="admin-btn" type="submit">Assign Task</button>
+</form>
+</section>
+
+</main>
+</div>
+</div>
+{% endblock %}

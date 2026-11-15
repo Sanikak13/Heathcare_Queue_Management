@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Login | HealthQueue{% endblock %}
+
+{% block head %}
+<style>
+    .staff-login-wrapper {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        background: #f1f7fc;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 430px;
+        padding: 42px 35px;
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0 15px 45px rgba(20, 50, 90, 0.10);
+    }
+
+    .logo {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        border-radius: 16px;
+        background: #e5f3ff;
+        color: #0879c9;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .brand {
+        text-align: center;
+        color: #0879c9;
+        font-size: 23px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .login-card h1 {
+        text-align: center;
+        font-size: 25px;
+        color: #123c70;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #718096;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .field-label {
+        display: block;
+        margin: 16px 0 7px;
+        color: #405168;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .login-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #dce6ef;
+        border-radius: 9px;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .login-input:focus {
+        border-color: #0879c9;
+        box-shadow: 0 0 0 3px #eaf4fc;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 15px;
+        margin-top: 22px;
+        border: none;
+        border-radius: 9px;
+        background: #0879c9;
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .login-button:hover {
+        background: #0565a9;
+        transform: translateY(-2px);
+    }
+
+    .demo-note {
+        margin-top: 20px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #eaf4fc;
+        color: #456783;
+        font-size: 12px;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .error {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #fff0f0;
+        color: #b42318;
+        font-size: 13px;
+    }
+
+    .footer-text {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 12px;
+        color: #8795a8;
+        line-height: 1.5;
+    }
+
+    .footer-text a {
+        color: #0879c9;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+        .login-card {
+            padding: 35px 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="staff-login-wrapper">
+
+    <main class="login-card">
+
+        <div class="logo">+</div>
+
+        <div class="brand">HealthQueue</div>
+
+        <h1>Staff Portal</h1>
+
+        <p class="subtitle">
+            Access your shifts, attendance, assigned responsibilities
+            and hospital operations dashboard.
+        </p>
+
+        <form method="POST" action="{{ url_for('staff_login') }}">
+
+            <label class="field-label" for="username">Username</label>
+            <input
+                class="login-input"
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your staff username"
+                autocomplete="username"
+            >
+
+            <label class="field-label" for="password">Password</label>
+            <input
+                class="login-input"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+            >
+
+            {% if error %}
+                <div class="error" role="alert">{{ error }}</div>
+            {% endif %}
+
+            <button type="submit" class="login-button">
+                Enter Staff Dashboard
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="demo-note">
+            In demo mode, you can enter the dashboard without credentials.
+            In normal mode, use the username and password assigned to your staff account.
+        </div>
+
+        <div class="footer-text">
+            HealthQueue Healthcare Management System
+            <br><br>
+            <a href="{{ url_for('home') }}">Back to Home</a>
+        </div>
+
+    </main>
+
+</div>
+{% endblock %}

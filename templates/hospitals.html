@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Hospitals | HealthQueue{% endblock %}
+
+{% block head %}
+<meta name="description" content="Explore hospitals and healthcare services on HealthQueue.">
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+.hospitals-page {
+    max-width:1200px;
+    margin:55px auto;
+    padding:0 22px;
+    color:#17324f;
+    font-family:'DM Sans',sans-serif;
+}
+
+.hospitals-heading {
+    margin-bottom:35px;
+}
+
+.hospitals-heading .eyebrow {
+    color:#1769aa;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+
+.hospitals-heading h1 {
+    color:#123c70;
+    font-size:36px;
+    margin:12px 0;
+}
+
+.hospitals-heading p {
+    color:#718096;
+    max-width:650px;
+    line-height:1.7;
+}
+
+.hospital-grid {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:22px;
+}
+
+.hospital-card {
+    background:white;
+    padding:26px;
+    border-radius:16px;
+    border:1px solid #eaf0f6;
+    box-shadow:0 5px 22px rgba(18,60,112,.06);
+    transition:.2s;
+}
+
+.hospital-card:hover {
+    transform:translateY(-5px);
+    box-shadow:0 12px 28px rgba(18,60,112,.10);
+}
+
+.hospital-icon {
+    width:52px;
+    height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:#eaf4fc;
+    color:#1769aa;
+    font-size:23px;
+    margin-bottom:18px;
+}
+
+.hospital-card h2 {
+    color:#123c70;
+    font-size:19px;
+    margin:0 0 17px;
+}
+
+.hospital-info {
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    color:#718096;
+    font-size:13px;
+    margin-bottom:12px;
+    line-height:1.6;
+}
+
+.hospital-info i {
+    color:#1769aa;
+    margin-top:3px;
+    width:15px;
+}
+
+.hospital-card a {
+    display:inline-block;
+    margin-top:12px;
+    padding:11px 16px;
+    background:#1769aa;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.hospital-card a:hover {
+    background:#123c70;
+}
+
+.hospital-empty {
+    grid-column:1/-1;
+    text-align:center;
+    padding:55px 20px;
+    background:white;
+    border-radius:16px;
+    color:#718096;
+}
+
+.hospital-empty i {
+    font-size:38px;
+    color:#1769aa;
+}
+
+.hospital-empty h2 {
+    color:#123c70;
+}
+
+.hospital-back {
+    display:inline-block;
+    margin-top:35px;
+    padding:12px 19px;
+    border:1px solid #1769aa;
+    color:#1769aa;
+    border-radius:9px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+}
+
+.hospital-back:hover {
+    background:#eaf4fc;
+}
+
+@media(max-width:900px) {
+    .hospital-grid {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media(max-width:600px) {
+    .hospital-grid {
+        grid-template-columns:1fr;
+    }
+
+    .hospitals-heading h1 {
+        font-size:29px;
+    }
+
+    .hospital-card {
+        padding:21px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="hospitals-page">
+
+    <section class="hospitals-heading">
+        <span class="eyebrow">HEALTHCARE NETWORK</span>
+
+        <h1>Find Your Hospital</h1>
+
+        <p>
+            Explore our demo healthcare network and discover hospitals
+            and their available medical services.
+        </p>
+    </section>
+
+    <section class="hospital-grid">
+
+        {% for hospital in hospitals %}
+
+        <article class="hospital-card">
+
+            <div class="hospital-icon">
+                <i class="fas fa-hospital"></i>
+            </div>
+
+            <h2>{{ hospital.hospital_name }}</h2>
+
+            <div class="hospital-info">
+                <i class="fas fa-location-dot"></i>
+                <span>{{ hospital.location }}</span>
+            </div>
+
+            <div class="hospital-info">
+                <i class="fas fa-phone"></i>
+                <span>{{ hospital.phone or 'Contact unavailable' }}</span>
+            </div>
+
+            <a href="{{ url_for('hospital_doctors', hospital_id=hospital.hospital_id) }}">
+                Explore Doctors <i class="fas fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        {% else %}
+
+        <div class="hospital-empty">
+            <i class="fas fa-hospital-user"></i>
+            <h2>No hospitals available</h2>
+            <p>Please check back later.</p>
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+    <a href="{{ url_for('home') }}" class="hospital-back">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+
+</main>
+{% endblock %}

@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}Doctors | HealthQueue{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+.doctors-page {
+    max-width:1200px;
+    margin:55px auto;
+    padding:0 22px;
+    color:#17324f;
+    font-family:'DM Sans',sans-serif;
+}
+
+.doctors-heading {
+    margin-bottom:35px;
+}
+
+.doctors-heading .eyebrow {
+    color:#1769aa;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+
+.doctors-heading h1 {
+    color:#123c70;
+    font-size:36px;
+    margin:12px 0;
+}
+
+.doctors-heading p {
+    color:#718096;
+    line-height:1.7;
+}
+
+.doctors-grid {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:22px;
+}
+
+.doctor-card {
+    background:white;
+    padding:26px;
+    border-radius:16px;
+    border:1px solid #eaf0f6;
+    box-shadow:0 5px 22px rgba(18,60,112,.06);
+    transition:.2s;
+}
+
+.doctor-card:hover {
+    transform:translateY(-5px);
+    box-shadow:0 12px 28px rgba(18,60,112,.10);
+}
+
+.doctor-icon {
+    width:55px;
+    height:55px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#eaf4fc;
+    color:#1769aa;
+    border-radius:15px;
+    font-size:24px;
+    margin-bottom:18px;
+}
+
+.doctor-card h2 {
+    color:#123c70;
+    font-size:19px;
+    margin:0 0 17px;
+}
+
+.doctor-info {
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    color:#718096;
+    font-size:13px;
+    margin-bottom:12px;
+    line-height:1.6;
+}
+
+.doctor-info i {
+    color:#1769aa;
+    margin-top:3px;
+    width:15px;
+}
+
+.doctor-card .book-doctor {
+    display:inline-block;
+    margin-top:12px;
+    padding:11px 16px;
+    background:#1769aa;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.doctor-card .book-doctor:hover {
+    background:#123c70;
+}
+
+.doctor-disclaimer {
+    display:block;
+    margin-top:14px;
+    color:#71849a;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.doctor-empty {
+    grid-column:1/-1;
+    text-align:center;
+    padding:50px 20px;
+    background:white;
+    border-radius:16px;
+    color:#718096;
+}
+
+.doctor-empty i {
+    color:#1769aa;
+    font-size:36px;
+}
+
+.doctor-empty h2 {
+    color:#123c70;
+}
+
+.doctors-back {
+    display:inline-block;
+    margin-top:35px;
+    padding:12px 19px;
+    border:1px solid #1769aa;
+    color:#1769aa;
+    border-radius:9px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+}
+
+.doctors-back:hover {
+    background:#eaf4fc;
+}
+
+@media(max-width:900px) {
+    .doctors-grid {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media(max-width:600px) {
+    .doctors-grid {
+        grid-template-columns:1fr;
+    }
+
+    .doctors-heading h1 {
+        font-size:29px;
+    }
+
+    .doctor-card {
+        padding:21px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="doctors-page">
+
+    <section class="doctors-heading">
+        <span class="eyebrow">OUR MEDICAL TEAM</span>
+
+        <h1>Meet Our Doctors</h1>
+
+        <p>
+            Explore the demo doctors available at
+            <strong>{{ hospital.hospital_name }}</strong>,
+            {{ hospital.location }}.
+        </p>
+    </section>
+
+    <section class="doctors-grid">
+
+        {% for doctor in doctors %}
+
+        <article class="doctor-card">
+
+            <div class="doctor-icon">
+                <i class="fas fa-user-doctor"></i>
+            </div>
+
+            <h2>{{ doctor.doctor_name }}</h2>
+
+            <div class="doctor-info">
+                <i class="fas fa-stethoscope"></i>
+                <span>{{ doctor.department }}</span>
+            </div>
+
+            <div class="doctor-info">
+                <i class="fas fa-phone"></i>
+                <span>{{ doctor.phone or 'Contact unavailable' }}</span>
+            </div>
+
+            <div class="doctor-info">
+                <i class="fas fa-circle-check"></i>
+                <span>{{ doctor.availability }}</span>
+            </div>
+
+            <a href="{{ url_for('register') }}" class="book-doctor">
+                Book Appointment <i class="fas fa-arrow-right"></i>
+            </a>
+
+            <small class="doctor-disclaimer">
+                Fictional doctor profile for academic demonstration.
+            </small>
+
+        </article>
+
+        {% else %}
+
+        <div class="doctor-empty">
+            <i class="fas fa-user-doctor"></i>
+            <h2>No doctors available</h2>
+            <p>No doctors are currently listed for this hospital.</p>
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+    <a href="{{ url_for('hospitals') }}" class="doctors-back">
+        <i class="fas fa-arrow-left"></i> Back to Hospitals
+    </a>
+
+</main>
+{% endblock %}

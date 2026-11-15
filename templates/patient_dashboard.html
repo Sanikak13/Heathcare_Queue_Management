@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}My Dashboard | HealthQueue{% endblock %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+.patient-dashboard {
+    max-width:1100px;
+    margin:45px auto;
+    padding:0 22px;
+    color:#17324f;
+    font-family:'DM Sans',sans-serif;
+}
+
+.patient-welcome {
+    margin-bottom:30px;
+}
+
+.patient-welcome span {
+    color:#1769aa;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+
+.patient-welcome h1 {
+    color:#123c70;
+    font-size:32px;
+    margin:10px 0;
+}
+
+.patient-welcome p {
+    color:#718096;
+}
+
+.patient-quick-actions {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.patient-action-card {
+    display:block;
+    background:white;
+    padding:23px;
+    border-radius:15px;
+    text-decoration:none;
+    color:#123c70;
+    box-shadow:0 5px 20px rgba(18,60,112,.05);
+    transition:.2s;
+}
+
+.patient-action-card:hover {
+    transform:translateY(-4px);
+}
+
+.patient-action-card .icon {
+    font-size:23px;
+    color:#1769aa;
+    margin-bottom:13px;
+}
+
+.patient-action-card h3 {
+    margin:0 0 8px;
+    font-size:17px;
+}
+
+.patient-action-card p {
+    margin:0;
+    font-size:13px;
+    color:#718096;
+    line-height:1.6;
+}
+
+.patient-appointments {
+    background:white;
+    padding:26px;
+    border-radius:17px;
+    box-shadow:0 5px 20px rgba(18,60,112,.05);
+    overflow-x:auto;
+}
+
+.patient-appointments h2 {
+    color:#123c70;
+    margin-top:0;
+}
+
+.patient-appointments table {
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
+}
+
+.patient-appointments th {
+    text-align:left;
+    padding:14px;
+    color:#718096;
+    background:#f5f9fd;
+    font-size:12px;
+    text-transform:uppercase;
+}
+
+.patient-appointments td {
+    padding:16px 14px;
+    border-bottom:1px solid #edf2f7;
+    font-size:13px;
+}
+
+.patient-token {
+    color:#1769aa;
+    font-weight:800;
+}
+
+.patient-status {
+    display:inline-block;
+    padding:7px 11px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.patient-status.waiting {
+    background:#fff4dc;
+    color:#a66b00;
+}
+
+.patient-status.serving {
+    background:#e3f2ff;
+    color:#1769aa;
+}
+
+.patient-status.completed {
+    background:#e3f8ec;
+    color:#16834c;
+}
+
+.patient-empty {
+    text-align:center;
+    padding:40px 15px;
+    color:#718096;
+}
+
+.patient-empty h3 {
+    color:#123c70;
+}
+
+.patient-book-button {
+    display:inline-block;
+    margin-top:15px;
+    background:#1769aa;
+    color:white;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.patient-book-button:hover {
+    background:#123c70;
+}
+
+@media(max-width:700px) {
+    .patient-quick-actions {
+        grid-template-columns:1fr;
+    }
+
+    .patient-welcome h1 {
+        font-size:26px;
+    }
+
+    .patient-appointments {
+        padding:17px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="patient-dashboard">
+
+    <section class="patient-welcome">
+        <span>PATIENT PORTAL</span>
+
+        url_f<h1>Welcome, Patient!</h1>or('home')
+
+        <p>s
+            Manage your appointments and keep track of your
+            healthcare journey.
+        </p>
+    </section>
+
+    <section class="patient-quick-actions">
+
+        <a href="{{ url_for('register') }}" class="patient-action-card">
+            <div class="icon">＋</div>
+            <h3>Book Appointment</h3>
+            <p>Choose a hospital and doctor for a new consultation.</p>
+        </a>
+
+        <a href="#my-appointments" class="patient-action-card">
+            <div class="icon">⌕</div>
+            <h3>My Appointments</h3>
+            <p>View your registered appointments and their latest queue status.</p>
+        </a>
+
+        <a href="{{ url_for('queue_dashboard') }}" class="patient-action-card">
+            <div class="icon">☷</div>
+            <h3>Live Queue</h3>
+            <p>View the current patient queue and consultation progress.</p>
+        </a>
+
+    </section>
+
+    <section class="patient-appointments" id="my-appointments">
+
+        <h2>My Appointments</h2>
+
+        {% if appointments %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Token</th>
+                    <th>Hospital</th>
+                    <th>Doctor</th>
+                    <th>Department</th>
+                    <th>Position</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+
+                    <td class="patient-token">
+                        {{ appointment['token_number'] }}
+                    </td>
+
+                    <td>
+                        {{ appointment['hospital_name'] or 'Unavailable' }}
+                    </td>
+
+                    <td>
+                        {{ appointment['doctor_name'] or 'Unavailable' }}
+                    </td>
+
+                    <td>
+                        {{ appointment['department'] }}
+                    </td>
+
+                    <td>
+                        {{ appointment['queue_position'] }}
+                    </td>
+
+                    <td>
+                        {% if appointment['queue_status'] == 'Waiting' %}
+                            <span class="patient-status waiting">Waiting</span>
+                        {% elif appointment['queue_status'] == 'Serving' %}
+                            <span class="patient-status serving">Serving</span>
+                        {% elif appointment['queue_status'] == 'Completed' %}
+                            <span class="patient-status completed">Completed</span>
+                        {% else %}
+                            {{ appointment['queue_status'] }}
+                        {% endif %}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+
+        <div class="patient-empty">
+            <h3>No appointments yet</h3>
+            <p>Your registered appointments will appear here.</p>
+
+            <a href="{{ url_for('register') }}" class="patient-book-button">
+                Book Your First Appointment
+            </a>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+{% endblock %}
